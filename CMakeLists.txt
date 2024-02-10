@@ -13,5 +13,5 @@ target_compile_features(INIReader PUBLIC cxx_std_11)
 
 add_executable(xy xy.cpp)
 
-target_link_libraries(ini OBJECT xy)
-target_link_libraries(INIReader OBJECT xy)
+target_link_libraries(xy PUBLIC ini)
+target_link_libraries(xy PUBLIC INIReader)
