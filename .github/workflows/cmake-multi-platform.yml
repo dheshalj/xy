@@ -62,12 +62,6 @@ jobs:
       id: get_version
       run: echo "::set-output name=version::$(cat version.txt)"  # Assuming version is stored in version.txt
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: xy
-        path: ${{ steps.strings.outputs.build-output-dir }}/xy  # Update with the path to your binary file
-
     - name: Create or Update Release
       id: create_or_update_release
       uses: ncipollo/release-action@v1
@@ -76,14 +70,9 @@ jobs:
         tag: v${{ steps.get_version.outputs.version }}  # Dynamic tag name based on version
         body: |
           Describe what's included in this release
+        allowUpdates: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Download Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: xy
-        path: ${{ github.workspace }}/downloaded_binary
 
     - name: Upload Release Asset
       id: upload-release-asset
@@ -92,6 +81,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_or_update_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/downloaded_binary/xy  # Update with the path to your binary file
+        asset_path: ${{ steps.strings.outputs.build-output-dir }}/xy  # Update with the path to your binary file
         asset_name: xy  # Update with the name of your binary file
         asset_content_type: application/octet-stream
