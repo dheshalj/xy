@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 
 project(xy)
 
-
 add_library(ini OBJECT ini/ini.c ini/ini.h)
 target_include_directories(ini PUBLIC include)
 target_compile_features(ini PUBLIC cxx_std_11)
